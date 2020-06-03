@@ -36,6 +36,8 @@
 [Epidemic, Endemic, and Eradication Simulations](https://www.youtube.com/watch?v=7OLpKqTriio)  
 [Getting latest news of coronavirus with New York Times as data source](https://github.com/mew/Coronavirus)  
 [A Simulation Model for Intra-Urban Movements](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0132576#sec007)
+[Bunch of Algrithms](https://github.com/TheAlgorithms/Java)  
+
 
 
 ## Git guide
