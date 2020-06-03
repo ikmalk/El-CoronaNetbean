@@ -1,7 +1,7 @@
 package corona.Movement;
 
 
-import Movement.*;
+
 import java.util.Random;
 
 /*
