@@ -1,6 +1,7 @@
-package Movement;
+package corona.Movement;
 
 
+import Movement.*;
 import java.util.Random;
 
 /*
@@ -12,19 +13,20 @@ import java.util.Random;
  *
  * @author Oliver
  */
-public class Senior extends Person {
+public class Adult extends Person {
 
-    private final int ageGroup = 2;
     private final int twoWeeks = 14;
     private Integer ID;
     private int age;
     private Character gender;
     private String job;
     private int educationLevel;
-    private double immunity, infectionRate;
+    private double immunity;
+    private double infectionRate;
     private Event[] myEvent;
+    private static int ageGroup = 1;
 
-    public Senior(Integer ID, int age, Character gender) {
+    public Adult(Integer ID, int age, Character gender) {
         super(ID, age, gender);
         this.ID = ID;
         this.age = age;
@@ -34,26 +36,52 @@ public class Senior extends Person {
 
     public void generateJob() {
         Random r = new Random();
-        if (age >= 70) {
-            job = "Retired";
-        } else {
-            switch (r.nextInt(5)) {
-                case 0:
-                    job = "Retired";
-                    break;
-                case 1:
-                    job = "Professor";
-                    break;
-                case 2:
-                    job = "Self-employed";
-                    break;
-                case 3:
-                    job = "Retired";
-                    break;
-                case 4:
-                    job = "Retired";
-                    break;
-            }
+        switch (r.nextInt(15)) {
+            case 0:
+                job = "Doctor";
+                break;
+            case 1:
+                job = "Nurse";
+                break;
+            case 2:
+                job = "Officer";
+                break;
+            case 3:
+                job = "Crew Attenant";
+                break;
+            case 4:
+                job = "Secretary";
+                break;
+            case 5:
+                job = "Plumber";
+                break;
+            case 6:
+                job = "Teacher";
+                break;
+            case 7:
+                job = "Student";
+                break;
+            case 8:
+                job = "Shopkeeper";
+                break;
+            case 9:
+                job = "Bank Clark";
+                break;
+            case 10:
+                job = "Waiter";
+                break;
+            case 11:
+                job = "Chef";
+                break;
+            case 12:
+                job = "Staff";
+                break;
+            case 13:
+                job = "Engineer";
+                break;
+            case 14:
+                job = "Worker";
+                break;
         }
     }
 
@@ -62,25 +90,26 @@ public class Senior extends Person {
         if (job == null) {
             throw new Exception("Define the job first");
         }
-        if (job.compareTo("Retired") == 0
-                || job.compareTo("Self-employed") == 0) {
-            educationLevel = 8 + r.nextInt(10);
+        if (job.compareTo("Plumber") == 0 || job.compareTo("Worker") == 0
+                || job.compareTo("Chef") == 0 || job.compareTo("Waiter") == 0
+                || job.compareTo("Student") == 0 || job.compareTo("Shopkeeper") == 0
+                || job.compareTo("Staff") == 0 || job.compareTo("Crew Attendant") == 0) {
+            educationLevel = r.nextInt(10) + 10;
         } else {
-            educationLevel = 10 + r.nextInt(10);
+            educationLevel = r.nextInt(5) + 15;
         }
+    }
+
+    public void setImmunity() {
+        Random r = new Random();
+        immunity = 1 - (5 + r.nextInt(46)) / 100;
     }
 
     public void setInfectionRate() throws Exception {
         if (infectionRate < 0) {
             throw new Exception("Invalid infection rate");
         }
-        infectionRate = 1 - (immunity + educationLevel / 600);
-
-    }
-
-    public void setImmunity() {
-        Random r = new Random();
-        immunity = 1 - (10 + r.nextInt(60)) / 100;
+        infectionRate = 1 - (immunity + educationLevel / 500);
     }
 
     public Integer getID() {

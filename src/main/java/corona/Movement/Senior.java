@@ -1,7 +1,7 @@
-package Movement;
+package corona.Movement;
 
 
-import java.util.List;
+import Movement.*;
 import java.util.Random;
 
 /*
@@ -13,10 +13,10 @@ import java.util.Random;
  *
  * @author Oliver
  */
-public class Children extends Person {
+public class Senior extends Person {
 
+    private final int ageGroup = 2;
     private final int twoWeeks = 14;
-    private final int ageGroup = 0;
     private Integer ID;
     private int age;
     private Character gender;
@@ -25,7 +25,7 @@ public class Children extends Person {
     private double immunity, infectionRate;
     private Event[] myEvent;
 
-    public Children(Integer ID, int age, Character gender) {
+    public Senior(Integer ID, int age, Character gender) {
         super(ID, age, gender);
         this.ID = ID;
         this.age = age;
@@ -33,38 +33,55 @@ public class Children extends Person {
         myEvent = new Event[twoWeeks];
     }
 
-    public void generateJob() throws Exception {
-        if (age < 0) {
-            throw new Exception("Invalid age");
-        }
-        if (age <= 5) {
-            job = "Kid";
-        } else if (age < 12) {
-            job = "Pupil";
+    public void generateJob() {
+        Random r = new Random();
+        if (age >= 70) {
+            job = "Retired";
         } else {
-            job = "Student";
+            switch (r.nextInt(5)) {
+                case 0:
+                    job = "Retired";
+                    break;
+                case 1:
+                    job = "Professor";
+                    break;
+                case 2:
+                    job = "Self-employed";
+                    break;
+                case 3:
+                    job = "Retired";
+                    break;
+                case 4:
+                    job = "Retired";
+                    break;
+            }
         }
     }
 
-    public void setEducationLevel() {
+    public void setEducationLevel() throws Exception {
         Random r = new Random();
-        if (age <= 15) {
-            educationLevel = r.nextInt(5) + 1;
-        } else {
-            educationLevel = r.nextInt(10) + 5;
+        if (job == null) {
+            throw new Exception("Define the job first");
         }
-    }
-
-    public void setImmunity() {
-        Random r = new Random();
-        immunity = 1 - r.nextInt(31) / 100;
+        if (job.compareTo("Retired") == 0
+                || job.compareTo("Self-employed") == 0) {
+            educationLevel = 8 + r.nextInt(10);
+        } else {
+            educationLevel = 10 + r.nextInt(10);
+        }
     }
 
     public void setInfectionRate() throws Exception {
         if (infectionRate < 0) {
             throw new Exception("Invalid infection rate");
         }
-        infectionRate = 1 - (immunity + educationLevel / 500);
+        infectionRate = 1 - (immunity + educationLevel / 600);
+
+    }
+
+    public void setImmunity() {
+        Random r = new Random();
+        immunity = 1 - (10 + r.nextInt(60)) / 100;
     }
 
     public Integer getID() {
@@ -99,11 +116,11 @@ public class Children extends Person {
     }
 
     public String getEventToString() throws Exception {
-        String str="";
-       for(int i=0;i<myEvent.length;i++){
-       str+=myEvent[i].showEventStr()+"\n";
-       } 
-       return str;
+        String str = "";
+        for (int i = 0; i < myEvent.length; i++) {
+            str += myEvent[i].showEventStr() + "\n";
+        }
+        return str;
     }
 
     public void setEvent() {
@@ -115,16 +132,10 @@ public class Children extends Person {
         }
     }
 
-    public void showEventByDate(int day_of_month) throws Exception {
+    public void showEvent(int day_of_month) throws Exception {
         if (day_of_month >= 14 || day_of_month < 1) {
             throw new Exception("Invalid day_of_month");
         }
         myEvent[day_of_month - 1].showEvent();
-    }
-
-    public void showEventAll() throws Exception {
-        for (int i = 0; i < myEvent.length; i++) {
-            myEvent[i].showEvent();
-        }
     }
 }
