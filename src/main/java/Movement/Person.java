@@ -1,0 +1,52 @@
+package Movement;
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ *
+ * @author Oliver
+ */
+public abstract class Person {
+
+    private Integer ID;
+    private int age;
+    private Character gender;
+    private String job;
+    private int educationLevel;
+    private double immunity;
+
+    public Person(Integer ID, int age, Character gender) {
+        this.ID = ID;
+        this.age = age;
+        this.gender = gender;
+    }
+
+    public Integer getID() {
+        return ID;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public Character getGender() {
+        return gender;
+    }
+
+    public String getJob() {
+        return job;
+    }
+
+    public int getEducationLevel() {
+        return educationLevel;
+    }
+
+    public double getImmunity() {
+        return immunity;
+    }
+
+}
