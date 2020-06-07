@@ -13,14 +13,15 @@ import java.util.Random;
  */
 public class Senior extends Person {
 
-    private final int ageGroup = 2;
+    private static int ageGroup = 2;
     private final int twoWeeks = 14;
     private Integer ID;
     private int age;
     private Character gender;
     private String job;
     private int educationLevel;
-    private double immunity, infectionRate;
+    private double immunity;
+    private double infectionRate;
     private Event[] myEvent;
     private int jobCase, personScore;
 
@@ -36,7 +37,7 @@ public class Senior extends Person {
         Random r = new Random();
         if (age >= 70) {
             jobCase = r.nextInt(2) == 0 ? 0 : 3;
-            job = "Retired";
+            job =jobCase==0? "Retired Employee":"Retired Worker";
         } else {
             jobCase = r.nextInt(5);
             switch (jobCase) {
@@ -111,13 +112,13 @@ public class Senior extends Person {
         if (infectionRate < 0) {
             throw new Exception("Invalid infection rate");
         }
-        infectionRate = (1 - (immunity + educationLevel / 600))*(1+personScore/50);
-
+        infectionRate = (1 - (immunity + getEducationLevel() / 500))*(1+getPersonScore()/50);
+        
     }
 
     public void setImmunity() {
         Random r = new Random();
-        immunity = 1 - (10 + r.nextInt(60)) / 100;
+        immunity = (1 - (10 + r.nextInt(60)) / 100);
     }
 
     public Integer getID() {

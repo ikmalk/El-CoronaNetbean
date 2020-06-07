@@ -401,7 +401,7 @@ public class Event {
                 str = "GO_TO_SUPERMARKET";
                 break;
             case 7:
-                str = "GO_SHOPPING";
+                str = "GO_TO_SHOPPING_MALL";
                 break;
             case 8:
                 str = "GO_TO_AIRPORT";
@@ -410,8 +410,13 @@ public class Event {
                 str = "GO_TO_PARK";
                 break;
             case 10:
-                str = "GO_TO_GYM";
+                str = "GO_TO_POLICE_STATION";
                 break;
+            case 11:
+                str="GO_TO_GOVERNMENT_OFFICE";
+                break;
+            case 12:
+                str="GO_TO_GYM";
 
         }
         return str;
