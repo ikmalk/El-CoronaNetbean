@@ -68,14 +68,14 @@ public class Children extends Person {
 
     public void setImmunity() {
         Random r = new Random();
-        immunity = 1 - r.nextInt(31) / 100;
+        immunity = 1 - ((double)r.nextInt(31)) / 100;
     }
 
     public void setInfectionRate() throws Exception {
         if (infectionRate < 0) {
             throw new Exception("Invalid infection rate");
         }
-        infectionRate = (1 - (immunity + educationLevel / 500)) * (1 + personScore / 50);
+        infectionRate = (1 - (immunity + (double)educationLevel / 500)) * (1 + (double)personScore / 50);
     }
 
     public Integer getID() {

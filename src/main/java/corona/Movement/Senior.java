@@ -109,16 +109,17 @@ public class Senior extends Person {
     }
 
     public void setInfectionRate() throws Exception {
-        if (infectionRate < 0) {
+        if (personScore < 0||personScore>10||educationLevel<0||educationLevel>20) {
             throw new Exception("Invalid infection rate");
         }
-        infectionRate = (1 - (immunity + getEducationLevel() / 500))*(1+getPersonScore()/50);
+        infectionRate = (1 - (immunity +((double)getEducationLevel()) / 500))*(1+((double)getPersonScore())/50);
         
     }
 
     public void setImmunity() {
         Random r = new Random();
-        immunity = (1 - (10 + r.nextInt(60)) / 100);
+        int randomRate=r.nextInt(60);
+        immunity = (1 - (10 + (double)randomRate) / 100);
     }
 
     public Integer getID() {

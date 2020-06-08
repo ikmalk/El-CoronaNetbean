@@ -15,7 +15,7 @@ public abstract class Person {
     private int age;
     private Character gender;
     private String job;
-    private int educationLevel;
+    private int educationLevel, personScore;
     private double immunity, infectionRate;
 
     public Person(Integer ID, int age, Character gender) {
@@ -50,6 +50,10 @@ public abstract class Person {
 
     public double getInfectionRate() {
         return infectionRate;
+    }
+
+    public int getPersonScore() {
+        return personScore;
     }
 
 }
