@@ -1,6 +1,5 @@
 package corona.Movement;
 
-
 import java.util.Random;
 
 /*
@@ -19,11 +18,12 @@ public class Adult extends Person {
     private int age;
     private Character gender;
     private String job;
-    private int educationLevel;
+    private int educationLevel, jobCase;
     private double immunity;
     private double infectionRate;
     private Event[] myEvent;
     private static int ageGroup = 1;
+    private int personScore;
 
     public Adult(Integer ID, int age, Character gender) {
         super(ID, age, gender);
@@ -35,7 +35,8 @@ public class Adult extends Person {
 
     public void generateJob() {
         Random r = new Random();
-        switch (r.nextInt(15)) {
+        jobCase = r.nextInt(21);
+        switch (jobCase) {
             case 0:
                 job = "Doctor";
                 break;
@@ -43,7 +44,7 @@ public class Adult extends Person {
                 job = "Nurse";
                 break;
             case 2:
-                job = "Officer";
+                job = "Police";
                 break;
             case 3:
                 job = "Crew Attenant";
@@ -58,7 +59,7 @@ public class Adult extends Person {
                 job = "Teacher";
                 break;
             case 7:
-                job = "Student";
+                job = "College Student";
                 break;
             case 8:
                 job = "Shopkeeper";
@@ -81,6 +82,24 @@ public class Adult extends Person {
             case 14:
                 job = "Worker";
                 break;
+            case 15:
+                job = "Businessman";
+                break;
+            case 16:
+                job = "Security Guard";
+                break;
+            case 17:
+                job = "Bus Driver";
+                break;
+            case 18:
+                job = "Courier";
+                break;
+            case 19:
+                job = "Pilot";
+                break;
+            case 20:
+                job = "Politician";
+                break;
         }
     }
 
@@ -89,26 +108,155 @@ public class Adult extends Person {
         if (job == null) {
             throw new Exception("Define the job first");
         }
-        if (job.compareTo("Plumber") == 0 || job.compareTo("Worker") == 0
-                || job.compareTo("Chef") == 0 || job.compareTo("Waiter") == 0
-                || job.compareTo("Student") == 0 || job.compareTo("Shopkeeper") == 0
-                || job.compareTo("Staff") == 0 || job.compareTo("Crew Attendant") == 0) {
-            educationLevel = r.nextInt(10) + 10;
-        } else {
-            educationLevel = r.nextInt(5) + 15;
+        switch (jobCase) {
+            case 0:
+                educationLevel = 20;
+                break;
+            case 1:
+                educationLevel = 17;
+                break;
+            case 2:
+                educationLevel = 11;
+                break;
+            case 3:
+                educationLevel = 12;
+                break;
+            case 4:
+                educationLevel = 14;
+                break;
+            case 5:
+                educationLevel = 6;
+                break;
+            case 6:
+                educationLevel = 18;
+                break;
+            case 7:
+                educationLevel = 14;
+                break;
+            case 8:
+                educationLevel = 8;
+                break;
+            case 9:
+                educationLevel = 14;
+                break;
+            case 10:
+                educationLevel = 6;
+                break;
+            case 11:
+                educationLevel = 9;
+                break;
+            case 12:
+                educationLevel = 11;
+                break;
+            case 13:
+                educationLevel = 15;
+                break;
+            case 14:
+                educationLevel = 5;
+                break;
+            case 15:
+                educationLevel = 12;
+                break;
+            case 16:
+                educationLevel = 7;
+                break;
+            case 17:
+                educationLevel = 6;
+                break;
+            case 18:
+                educationLevel = 6;
+                break;
+            case 19:
+                educationLevel = 15;
+                break;
+            case 20:
+                educationLevel = 14;
+                break;
+        }
+    }
+
+    public void setPersonScore() throws Exception {
+        Random r = new Random();
+        if (job == null) {
+            throw new Exception("Define the job first");
+        }
+        switch (jobCase) {
+            case 0:
+                personScore = 10;
+                break;
+            case 1:
+                personScore = 10;
+                break;
+            case 2:
+                personScore = 7;
+                break;
+            case 3:
+                personScore = 8;
+                break;
+            case 4:
+                personScore = 6;
+                break;
+            case 5:
+                personScore = 7;
+                break;
+            case 6:
+                personScore = 7;
+                break;
+            case 7:
+                personScore = 8;
+                break;
+            case 8:
+                personScore = 8;
+                break;
+            case 9:
+                personScore = 7;
+                break;
+            case 10:
+                personScore = 8;
+                break;
+            case 11:
+                personScore = 6;
+                break;
+            case 12:
+                personScore = 7;
+                break;
+            case 13:
+                personScore = 4;
+                break;
+            case 14:
+                personScore = 6;
+                break;
+            case 15:
+                personScore = 9;
+                break;
+            case 16:
+                personScore = 5;
+                break;
+            case 17:
+                personScore = 9;
+                break;
+            case 18:
+                personScore = 8;
+                break;
+            case 19:
+                personScore = 7;
+                break;
+            case 20:
+                personScore = 5;
+                break;
         }
     }
 
     public void setImmunity() {
         Random r = new Random();
-        immunity = 1 - (5 + r.nextInt(46)) / 100;
+        immunity = 1 - (5 +((double)r.nextInt(46))) / 100;
     }
 
     public void setInfectionRate() throws Exception {
         if (infectionRate < 0) {
             throw new Exception("Invalid infection rate");
         }
-        infectionRate = 1 - (immunity + educationLevel / 500);
+        infectionRate = (1 - (immunity + (double)educationLevel / 500)) * (1 + (double)personScore / 50);
     }
 
     public Integer getID() {
@@ -135,6 +283,14 @@ public class Adult extends Person {
         return immunity;
     }
 
+    public double getInfectionRate() {
+        return infectionRate;
+    }
+
+    public int getPersonScore() {
+        return personScore;
+    }
+
     public int[] getEvent(int day_of_month) throws Exception {
         if (day_of_month >= 14 || day_of_month < 1) {
             throw new Exception("Invalid day_of_month");
@@ -155,7 +311,7 @@ public class Adult extends Person {
 
         for (int i = 0; i < myEvent.length; i++) {
             myEvent[i] = new Event(++day, month, year);
-            myEvent[i].setEvent(ageGroup);
+            myEvent[i].setEvent(ageGroup,jobCase);
         }
     }
 

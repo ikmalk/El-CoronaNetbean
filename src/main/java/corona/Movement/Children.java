@@ -1,6 +1,5 @@
 package corona.Movement;
 
-
 import java.util.List;
 import java.util.Random;
 
@@ -24,6 +23,7 @@ public class Children extends Person {
     private int educationLevel;
     private double immunity, infectionRate;
     private Event[] myEvent;
+    private int personScore, jobCase;
 
     public Children(Integer ID, int age, Character gender) {
         super(ID, age, gender);
@@ -39,10 +39,13 @@ public class Children extends Person {
         }
         if (age <= 5) {
             job = "Kid";
+            jobCase=0;
         } else if (age < 12) {
             job = "Pupil";
+            jobCase=1;
         } else {
             job = "Student";
+            jobCase=2;
         }
     }
 
@@ -51,20 +54,28 @@ public class Children extends Person {
         if (age <= 15) {
             educationLevel = r.nextInt(5) + 1;
         } else {
-            educationLevel = r.nextInt(10) + 5;
+            educationLevel = r.nextInt(6) + 5;
         }
+    }
+
+    public void setPersonScore() throws Exception {
+        Random r = new Random();
+        if (job == null) {
+            throw new Exception("Define the job first");
+        }
+        personScore = 5 + r.nextInt(5);
     }
 
     public void setImmunity() {
         Random r = new Random();
-        immunity = 1 - r.nextInt(31) / 100;
+        immunity = 1 - ((double)r.nextInt(31)) / 100;
     }
 
     public void setInfectionRate() throws Exception {
         if (infectionRate < 0) {
             throw new Exception("Invalid infection rate");
         }
-        infectionRate = 1 - (immunity + educationLevel / 500);
+        infectionRate = (1 - (immunity + (double)educationLevel / 500)) * (1 + (double)personScore / 50);
     }
 
     public Integer getID() {
@@ -91,6 +102,14 @@ public class Children extends Person {
         return immunity;
     }
 
+    public double getInfectionRate() {
+        return infectionRate;
+    }
+
+    public int getPersonScore() {
+        return personScore;
+    }
+
     public int[] getEvent(int day_of_month) throws Exception {
         if (day_of_month >= 14 || day_of_month < 1) {
             throw new Exception("Invalid day_of_month");
@@ -99,11 +118,11 @@ public class Children extends Person {
     }
 
     public String getEventToString() throws Exception {
-        String str="";
-       for(int i=0;i<myEvent.length;i++){
-       str+=myEvent[i].showEventStr()+"\n";
-       } 
-       return str;
+        String str = "";
+        for (int i = 0; i < myEvent.length; i++) {
+            str += myEvent[i].showEventStr() + "\n";
+        }
+        return str;
     }
 
     public void setEvent() {
@@ -111,7 +130,7 @@ public class Children extends Person {
 
         for (int i = 0; i < myEvent.length; i++) {
             myEvent[i] = new Event(++day, month, year);
-            myEvent[i].setEvent(ageGroup);
+            myEvent[i].setEvent(ageGroup,jobCase);
         }
     }
 

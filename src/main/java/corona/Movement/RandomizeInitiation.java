@@ -1,6 +1,5 @@
 package corona.Movement;
 
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -46,6 +45,7 @@ public class RandomizeInitiation {
             child[i].setEducationLevel();
             child[i].setEvent();
             child[i].setImmunity();
+            child[i].setPersonScore();
             child[i].setInfectionRate();
         }
         for (int i = 0; i < numOfAdult; i++) {
@@ -55,6 +55,7 @@ public class RandomizeInitiation {
             adult[i].setEducationLevel();
             adult[i].setEvent();
             adult[i].setImmunity();
+            adult[i].setPersonScore();
             adult[i].setInfectionRate();
         }
 
@@ -65,6 +66,7 @@ public class RandomizeInitiation {
             senior[i].setEvent();
             senior[i].setEducationLevel();
             senior[i].setImmunity();
+            senior[i].setPersonScore();
             senior[i].setInfectionRate();
         }
     }
@@ -80,7 +82,7 @@ public class RandomizeInitiation {
                 age = 18 + r.nextInt(43);
                 break;
             case 2://for senior
-                age = 60 + r.nextInt(30);
+                age = 60 + r.nextInt(25);
                 break;
         }
         if (age == -1) {
@@ -99,25 +101,28 @@ public class RandomizeInitiation {
     public void writeLogFile() throws IOException, Exception {
 
         FileWriter myWriter1 = new FileWriter("child.txt");
-        FileWriter myWriter2 = new FileWriter("adult");
-        FileWriter myWriter3 = new FileWriter("senior");
+        FileWriter myWriter2 = new FileWriter("adult.txt");
+        FileWriter myWriter3 = new FileWriter("senior.txt");
 
         if (child != null) {
             for (int i = 0; i < this.child.length; i++) {
-                myWriter1.write("ID: " + child[i].getID() );
+                myWriter1.write("\nID: " + child[i].getID()+" gender: "+child[i].getGender()+" age: "
+                        +child[i].getAge()+" job: "+child[i].getJob()+" infection rate: "+child[i].getInfectionRate());
                 myWriter1.write(child[i].getEventToString());
             }
         }
         if (adult != null) {
             for (int i = 0; i < this.adult.length; i++) {
-                myWriter2.write("ID: " + adult[i].getID() );
+                myWriter2.write("\nID: " + adult[i].getID()+" gender: "+adult[i].getGender()+" age: "
+                        +adult[i].getAge()+" job: "+adult[i].getJob()+" infection rate: "+adult[i].getInfectionRate());
                 myWriter2.write(adult[i].getEventToString());
             }
         }
         if (senior != null) {
             for (int i = 0; i < this.senior.length; i++) {
-                myWriter2.write("ID: " + senior[i].getID() );
-                myWriter2.write(senior[i].getEventToString());
+                myWriter3.write("\nID: " + senior[i].getID()+" gender: "+senior[i].getGender()+" age: "
+                        +senior[i].getAge()+" job: "+senior[i].getJob()+" infection rate: "+senior[i].getInfectionRate() );
+                myWriter3.write(senior[i].getEventToString());
             }
         }
     }
