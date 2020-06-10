@@ -24,6 +24,7 @@ public class MainClass {
 		object.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		object.setSize(677,713);
 		object.setVisible(true);
+		object.setResizable(false);
 		object.setLocationRelativeTo(null);
 		
 	}
