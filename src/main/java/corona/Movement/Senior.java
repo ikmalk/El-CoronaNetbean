@@ -1,6 +1,7 @@
 package corona.Movement;
 
 import java.util.Random;
+import test.Map;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -13,6 +14,7 @@ import java.util.Random;
  */
 public class Senior extends Person {
 
+    private Map map;
     private static int ageGroup = 2;
     private final int twoWeeks = 14;
     private Integer ID;
@@ -37,7 +39,7 @@ public class Senior extends Person {
         Random r = new Random();
         if (age >= 70) {
             jobCase = r.nextInt(2) == 0 ? 0 : 3;
-            job =jobCase==0? "Retired Employee":"Retired Worker";
+            job = jobCase == 0 ? "Retired Employee" : "Retired Worker";
         } else {
             jobCase = r.nextInt(5);
             switch (jobCase) {
@@ -109,17 +111,17 @@ public class Senior extends Person {
     }
 
     public void setInfectionRate() throws Exception {
-        if (personScore < 0||personScore>10||educationLevel<0||educationLevel>20) {
+        if (personScore < 0 || personScore > 10 || educationLevel < 0 || educationLevel > 20) {
             throw new Exception("Invalid infection rate");
         }
-        infectionRate = (1 - (immunity +((double)getEducationLevel()) / 500))*(1+((double)getPersonScore())/50);
-        
+        infectionRate = (1 - (immunity + ((double) getEducationLevel()) / 500)) * (1 + ((double) getPersonScore()) / 50);
+
     }
 
     public void setImmunity() {
         Random r = new Random();
-        int randomRate=r.nextInt(60);
-        immunity = (1 - (10 + (double)randomRate) / 100);
+        int randomRate = r.nextInt(60);
+        immunity = (1 - (10 + (double) randomRate) / 100);
     }
 
     public Integer getID() {
@@ -169,12 +171,13 @@ public class Senior extends Person {
         return str;
     }
 
-    public void setEvent() {
+    public void setEvent() throws Exception {
         int day = 0, month = 2, year = 2020;
 
         for (int i = 0; i < myEvent.length; i++) {
-            myEvent[i] = new Event(++day, month, year);
-            myEvent[i].setEvent(ageGroup,jobCase);
+            myEvent[i] = new Event(++day, month, year, this.ID);
+            myEvent[i].setEvent(ageGroup, jobCase);
+            myEvent[i].shownOnTheMap(getMap());
         }
     }
 
@@ -184,4 +187,13 @@ public class Senior extends Person {
         }
         myEvent[day_of_month - 1].showEvent();
     }
+
+    public Map getMap() {
+        return map;
+    }
+
+    public void setMap(Map map) {
+        this.map = map;
+    }
+
 }

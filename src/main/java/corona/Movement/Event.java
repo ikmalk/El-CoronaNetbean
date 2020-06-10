@@ -1,5 +1,6 @@
 package corona.Movement;
 
+import test.*;
 import java.util.Random;
 
 /*
@@ -17,7 +18,7 @@ public class Event {
     private static final int GO_TO_SCHOOL = 1;
     private static final int GO_TO_OFFICE = 2;
     private static final int GO_TO_HOSPITAL = 3;
-    private static final int GO_TO_RESTUARANT = 4;
+    private static final int GO_TO_RESTAURANT = 4;
     private static final int GO_TO_BANK = 5;
     private static final int GO_TO_SUPERMARKET = 6;
     private static final int GO_TO_SHOPPING_MALL = 7;
@@ -29,12 +30,17 @@ public class Event {
     private static final int SIZE = 3;
     private int day_of_month, month, year;
     private int[] event;
+    private String[] locationNum;
+    private Integer ID;
+    private Random r = new Random();
 
-    public Event(int day_of_month, int month, int year) {
+    public Event(int day_of_month, int month, int year, Integer ID) {
         this.day_of_month = day_of_month;
         this.month = month;
         this.year = year;
+        this.ID = ID;
         event = new int[SIZE];
+        locationNum = new String[SIZE];
     }
 
     public int getDay_Of_Month() {
@@ -359,7 +365,7 @@ public class Event {
         String str;
         for (int i = 0; i < event.length; i++) {
 
-            System.out.print(switchCaseGetStr(event[i]) + "--> ");
+            System.out.print(switchCaseGetStr(event[i]) + locationNum[i] + "--> ");
         }
         System.out.println("");
     }
@@ -371,9 +377,112 @@ public class Event {
         String str = "";
         for (int i = 0; i < event.length; i++) {
 
-            str += "\n" + switchCaseGetStr(event[i]) + "--> ";
+            str += "\n" + switchCaseGetStr(event[i]) + locationNum[i] + "--> ";
         }
         return str;
+    }
+
+    public void shownOnTheMap(Map map) throws Exception {
+        int i;
+        int j;
+        int ranInd;
+        if (event == null) {
+            throw new Exception("Null Event Array");
+        }
+        for (int k = 0; k < event.length; k++) {
+            switch (event[k]) {
+                case 0:
+                    ranInd = r.nextInt(map.locationlist[0].length());
+                    i = (int) map.locationlist[0].getIndexI(ranInd);
+                    j = (int) map.locationlist[0].getIndexJ(ranInd);
+                    map.map[i][j].setVisitorByDate(this.day_of_month - 1, this.ID);
+                    locationNum[k] = " " + (ranInd + 1);
+                    break;
+                case 1:
+                    ranInd = r.nextInt(map.locationlist[1].length());
+                    i = (int) map.locationlist[1].getIndexI(ranInd);
+                    j = (int) map.locationlist[1].getIndexJ(ranInd);
+                    map.map[i][j].setVisitorByDate(this.day_of_month - 1, this.ID);
+                    locationNum[k] = " " + (ranInd + 1);
+                    break;
+                case 2:
+                    ranInd = r.nextInt(map.locationlist[2].length());
+                    i = (int) map.locationlist[2].getIndexI(ranInd);
+                    j = (int) map.locationlist[2].getIndexJ(ranInd);
+                    map.map[i][j].setVisitorByDate(this.day_of_month - 1, this.ID);
+                    locationNum[k] = " " + (ranInd + 1);
+                    break;
+                case 3:
+                    ranInd = r.nextInt(map.locationlist[3].length());
+                    i = (int) map.locationlist[3].getIndexI(ranInd);
+                    j = (int) map.locationlist[3].getIndexJ(ranInd);
+                    map.map[i][j].setVisitorByDate(this.day_of_month - 1, this.ID);
+                    locationNum[k] = "";
+                    break;
+                case 4:
+                    ranInd = r.nextInt(map.locationlist[4].length());
+                    i = (int) map.locationlist[4].getIndexI(ranInd);
+                    j = (int) map.locationlist[4].getIndexJ(ranInd);
+                    map.map[i][j].setVisitorByDate(this.day_of_month - 1, this.ID);
+                    locationNum[k] = " " + (ranInd + 1);
+                    break;
+                case 5:
+                    ranInd = r.nextInt(map.locationlist[5].length());
+                    i = (int) map.locationlist[5].getIndexI(ranInd);
+                    j = (int) map.locationlist[5].getIndexJ(ranInd);
+                    map.map[i][j].setVisitorByDate(this.day_of_month - 1, this.ID);
+                    locationNum[k] = " " + (ranInd + 1);
+                    break;
+                case 6:
+                    ranInd = r.nextInt(map.locationlist[6].length());
+                    i = (int) map.locationlist[6].getIndexI(ranInd);
+                    j = (int) map.locationlist[6].getIndexJ(ranInd);
+                    map.map[i][j].setVisitorByDate(this.day_of_month - 1, this.ID);
+                    locationNum[k] = " " + (ranInd + 1);
+                    break;
+                case 7:
+                    ranInd = r.nextInt(map.locationlist[7].length());
+                    i = (int) map.locationlist[7].getIndexI(ranInd);
+                    j = (int) map.locationlist[7].getIndexJ(ranInd);
+                    map.map[i][j].setVisitorByDate(this.day_of_month - 1, this.ID);
+                    locationNum[k] = " " + (ranInd + 1);
+                    break;
+                case 8:
+                    ranInd = r.nextInt(map.locationlist[8].length());
+                    i = (int) map.locationlist[8].getIndexI(ranInd);
+                    j = (int) map.locationlist[8].getIndexJ(ranInd);
+                    map.map[i][j].setVisitorByDate(this.day_of_month - 1, this.ID);
+                    locationNum[k] = " " + (ranInd + 1);
+                    break;
+                case 9:
+                    ranInd = r.nextInt(map.locationlist[9].length());
+                    i = (int) map.locationlist[9].getIndexI(ranInd);
+                    j = (int) map.locationlist[9].getIndexJ(ranInd);
+                    map.map[i][j].setVisitorByDate(this.day_of_month - 1, this.ID);
+                    locationNum[k] = "";
+                    break;
+                case 10:
+                    ranInd = r.nextInt(map.locationlist[10].length());
+                    i = (int) map.locationlist[10].getIndexI(ranInd);
+                    j = (int) map.locationlist[10].getIndexJ(ranInd);
+                    map.map[i][j].setVisitorByDate(this.day_of_month - 1, this.ID);
+                    locationNum[k] = "";
+                    break;
+                case 11:
+                    ranInd = r.nextInt(map.locationlist[11].length());
+                    i = (int) map.locationlist[11].getIndexI(ranInd);
+                    j = (int) map.locationlist[11].getIndexJ(ranInd);
+                    map.map[i][j].setVisitorByDate(this.day_of_month - 1, this.ID);
+                    locationNum[k] = " " + (ranInd + 1);
+                    break;
+                case 12:
+                    ranInd = r.nextInt(map.locationlist[12].length());
+                    i = (int) map.locationlist[12].getIndexI(ranInd);
+                    j = (int) map.locationlist[12].getIndexJ(ranInd);
+                    map.map[i][j].setVisitorByDate(this.day_of_month - 1, this.ID);
+                    locationNum[k] = " " + (ranInd + 1);
+            }
+        }
     }
 
     public String switchCaseGetStr(int ind) {
@@ -392,7 +501,7 @@ public class Event {
                 str = "GO_TO_HOSPITAL";
                 break;
             case 4:
-                str = "GO_TO_RESTUARANT";
+                str = "GO_TO_RESTAURANT";
                 break;
             case 5:
                 str = "GO_TO_BANK";
@@ -413,10 +522,10 @@ public class Event {
                 str = "GO_TO_POLICE_STATION";
                 break;
             case 11:
-                str="GO_TO_GOVERNMENT_OFFICE";
+                str = "GO_TO_GOVERNMENT_OFFICE";
                 break;
             case 12:
-                str="GO_TO_GYM";
+                str = "GO_TO_GYM";
 
         }
         return str;

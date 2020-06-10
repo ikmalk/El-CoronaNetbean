@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Random;
 import java.util.Scanner;
+import test.Map;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -17,6 +18,7 @@ import java.util.Scanner;
  */
 public class RandomizeInitiation {
 
+    private Map map;
     private final int numOfCitizens = 1000;
     Children[] child;
     Adult[] adult;
@@ -34,7 +36,6 @@ public class RandomizeInitiation {
         adult = new Adult[numOfAdult];
         senior = new Senior[numOfSenior];
 
-        initiate();
     }
 
     public void initiate() throws Exception {
@@ -43,6 +44,7 @@ public class RandomizeInitiation {
             child[i] = new Children(count, getAge(0), getGender());
             child[i].generateJob();
             child[i].setEducationLevel();
+            child[i].setMap(getMap());
             child[i].setEvent();
             child[i].setImmunity();
             child[i].setPersonScore();
@@ -53,6 +55,7 @@ public class RandomizeInitiation {
             adult[i] = new Adult(count, getAge(1), getGender());
             adult[i].generateJob();
             adult[i].setEducationLevel();
+            adult[i].setMap(getMap());
             adult[i].setEvent();
             adult[i].setImmunity();
             adult[i].setPersonScore();
@@ -63,8 +66,9 @@ public class RandomizeInitiation {
             ++count;
             senior[i] = new Senior(count, getAge(2), getGender());
             senior[i].generateJob();
-            senior[i].setEvent();
             senior[i].setEducationLevel();
+            senior[i].setMap(getMap());
+            senior[i].setEvent();
             senior[i].setImmunity();
             senior[i].setPersonScore();
             senior[i].setInfectionRate();
@@ -98,6 +102,14 @@ public class RandomizeInitiation {
         return gender;
     }
 
+    public Map getMap() {
+        return map;
+    }
+
+    public void setMap(Map map) {
+        this.map = map;
+    }
+
     public void writeLogFile() throws IOException, Exception {
 
         FileWriter myWriter1 = new FileWriter("child.txt");
@@ -106,22 +118,22 @@ public class RandomizeInitiation {
 
         if (child != null) {
             for (int i = 0; i < this.child.length; i++) {
-                myWriter1.write("\nID: " + child[i].getID()+" gender: "+child[i].getGender()+" age: "
-                        +child[i].getAge()+" job: "+child[i].getJob()+" infection rate: "+child[i].getInfectionRate());
+                myWriter1.write("\nID: " + child[i].getID() + " gender: " + child[i].getGender() + " age: "
+                        + child[i].getAge() + " job: " + child[i].getJob() + " infection rate: " + child[i].getInfectionRate());
                 myWriter1.write(child[i].getEventToString());
             }
         }
         if (adult != null) {
             for (int i = 0; i < this.adult.length; i++) {
-                myWriter2.write("\nID: " + adult[i].getID()+" gender: "+adult[i].getGender()+" age: "
-                        +adult[i].getAge()+" job: "+adult[i].getJob()+" infection rate: "+adult[i].getInfectionRate());
+                myWriter2.write("\nID: " + adult[i].getID() + " gender: " + adult[i].getGender() + " age: "
+                        + adult[i].getAge() + " job: " + adult[i].getJob() + " infection rate: " + adult[i].getInfectionRate());
                 myWriter2.write(adult[i].getEventToString());
             }
         }
         if (senior != null) {
             for (int i = 0; i < this.senior.length; i++) {
-                myWriter3.write("\nID: " + senior[i].getID()+" gender: "+senior[i].getGender()+" age: "
-                        +senior[i].getAge()+" job: "+senior[i].getJob()+" infection rate: "+senior[i].getInfectionRate() );
+                myWriter3.write("\nID: " + senior[i].getID() + " gender: " + senior[i].getGender() + " age: "
+                        + senior[i].getAge() + " job: " + senior[i].getJob() + " infection rate: " + senior[i].getInfectionRate());
                 myWriter3.write(senior[i].getEventToString());
             }
         }

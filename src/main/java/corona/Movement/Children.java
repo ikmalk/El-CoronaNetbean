@@ -1,5 +1,6 @@
 package corona.Movement;
 
+import test.Map;
 import java.util.List;
 import java.util.Random;
 
@@ -14,6 +15,7 @@ import java.util.Random;
  */
 public class Children extends Person {
 
+    private Map map;
     private final int twoWeeks = 14;
     private final int ageGroup = 0;
     private Integer ID;
@@ -39,13 +41,13 @@ public class Children extends Person {
         }
         if (age <= 5) {
             job = "Kid";
-            jobCase=0;
+            jobCase = 0;
         } else if (age < 12) {
             job = "Pupil";
-            jobCase=1;
+            jobCase = 1;
         } else {
             job = "Student";
-            jobCase=2;
+            jobCase = 2;
         }
     }
 
@@ -68,14 +70,14 @@ public class Children extends Person {
 
     public void setImmunity() {
         Random r = new Random();
-        immunity = 1 - ((double)r.nextInt(31)) / 100;
+        immunity = 1 - ((double) r.nextInt(31)) / 100;
     }
 
     public void setInfectionRate() throws Exception {
         if (infectionRate < 0) {
             throw new Exception("Invalid infection rate");
         }
-        infectionRate = (1 - (immunity + (double)educationLevel / 500)) * (1 + (double)personScore / 50);
+        infectionRate = (1 - (immunity + (double) educationLevel / 500)) * (1 + (double) personScore / 50);
     }
 
     public Integer getID() {
@@ -125,12 +127,13 @@ public class Children extends Person {
         return str;
     }
 
-    public void setEvent() {
+    public void setEvent() throws Exception {
         int day = 0, month = 2, year = 2020;
 
         for (int i = 0; i < myEvent.length; i++) {
-            myEvent[i] = new Event(++day, month, year);
-            myEvent[i].setEvent(ageGroup,jobCase);
+            myEvent[i] = new Event(++day, month, year, this.ID);
+            myEvent[i].setEvent(ageGroup, jobCase);
+            myEvent[i].shownOnTheMap(getMap());
         }
     }
 
@@ -146,4 +149,13 @@ public class Children extends Person {
             myEvent[i].showEvent();
         }
     }
+
+    public Map getMap() {
+        return map;
+    }
+
+    public void setMap(Map map) {
+        this.map = map;
+    }
+
 }
