@@ -4,12 +4,25 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ListIterator;
 
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
+
+import corona.Movement.Adult;
+import corona.Movement.Children;
+import corona.Movement.MovementSimulatorAlgorithm;
+import corona.Movement.Senior;
+import corona.map.Map;
 
 @SuppressWarnings("serial")
 public class MovementSimulatorFrame extends JFrame{
@@ -73,53 +86,144 @@ public class MovementSimulatorFrame extends JFrame{
 	private JButton start;
 	private JButton prev;
 	private JButton next;
-	
+	private JButton showMap;
+		
 	private Font font1;
 	private Font font2;
 	private Font font3;
+	private Font font4;
+	
+	private JPanel topPanel;
+	private JPanel bottomRightPanel;
+	private JScrollPane midLeftPanel;
+	private JScrollPane midRightPanel;
 	
 	private InfectionSimulatorFrame infectSim;
+	private MovementSimulatorAlgorithm moveAlgo;
+	
+	private DoubleLinkedList<Children> childList;
+	private DoubleLinkedList<Adult> adultList;
+	private DoubleLinkedList<Senior> seniorList;
+	
+	private ListIterator<Children> childIterator;
+	private ListIterator<Adult> adultIterator;
+	private ListIterator<Senior> seniorIterator;
+	
+	private Map map;
 	
 	
 	public MovementSimulatorFrame() {
 		super("Movement");
 		requestFocus();
 		
+		
 		font1 = new Font("SansSerif", Font.BOLD, 30);
 		font2 = new Font("Arial", Font.BOLD, 20);
 		font3 = new Font("Arial", Font.PLAIN, 18);
-		getContentPane().setLayout(null);
+		font4 = new Font("Arial",Font.PLAIN,10);
+		
+		/*
+		 * JButton
+		 */
+		
+		topPanel = new JPanel();
+		
+		midLeftPanel = new JScrollPane();
+		
+		midRightPanel = new JScrollPane();
+		
+		bottomRightPanel = new JPanel();
+		SpringLayout sl_bottomRightPanel = new SpringLayout();
+		bottomRightPanel.setLayout(sl_bottomRightPanel);
+		
+		//Title for enter simulation
+		enter = new JTextField("Simulation");
+		bottomRightPanel.add(enter);
+		enter.setHorizontalAlignment(SwingConstants.CENTER);
+		enter.setEditable(false);
+		enter.setForeground(Color.DARK_GRAY);
+		enter.setFont(font1);
+		
+		//Name sim indicator
+		nameT = new JTextField("Name");
+		sl_bottomRightPanel.putConstraint(SpringLayout.SOUTH, enter, -29, SpringLayout.NORTH, nameT);
+		sl_bottomRightPanel.putConstraint(SpringLayout.WEST, nameT, 25, SpringLayout.WEST, bottomRightPanel);
+		sl_bottomRightPanel.putConstraint(SpringLayout.WEST, enter, 0, SpringLayout.WEST, nameT);
+		bottomRightPanel.add(nameT);
+		nameT.setHorizontalAlignment(SwingConstants.CENTER);
+		nameT.setEditable(false);
+		nameT.setFont(new Font("Arial", Font.BOLD, 18));
+		
+		//Day sim indicator
+		dayT = new JTextField("Day");
+		sl_bottomRightPanel.putConstraint(SpringLayout.SOUTH, nameT, -6, SpringLayout.NORTH, dayT);
+		sl_bottomRightPanel.putConstraint(SpringLayout.NORTH, dayT, 118, SpringLayout.NORTH, bottomRightPanel);
+		sl_bottomRightPanel.putConstraint(SpringLayout.WEST, dayT, 25, SpringLayout.WEST, bottomRightPanel);
+		sl_bottomRightPanel.putConstraint(SpringLayout.EAST, dayT, 0, SpringLayout.EAST, nameT);
+		bottomRightPanel.add(dayT);
+		dayT.setHorizontalAlignment(SwingConstants.CENTER);
+		dayT.setEditable(false);
+		dayT.setFont(new Font("Arial", Font.BOLD, 18));
+		
+		//Name sim input
+		nameI = new JTextField();
+		sl_bottomRightPanel.putConstraint(SpringLayout.NORTH, nameI, 0, SpringLayout.NORTH, nameT);
+		sl_bottomRightPanel.putConstraint(SpringLayout.WEST, nameI, 18, SpringLayout.EAST, nameT);
+		sl_bottomRightPanel.putConstraint(SpringLayout.EAST, nameI, 0, SpringLayout.EAST, enter);
+		bottomRightPanel.add(nameI);
+		nameI.setFont(new Font("Arial", Font.BOLD, 18));
+		
+		//Day sim input
+		dayI = new JTextField();
+		sl_bottomRightPanel.putConstraint(SpringLayout.NORTH, dayI, 6, SpringLayout.SOUTH, nameI);
+		sl_bottomRightPanel.putConstraint(SpringLayout.WEST, dayI, 18, SpringLayout.EAST, dayT);
+		sl_bottomRightPanel.putConstraint(SpringLayout.EAST, dayI, -25, SpringLayout.EAST, bottomRightPanel);
+		bottomRightPanel.add(dayI);
+		dayI.setFont(new Font("Arial", Font.BOLD, 18));
+
+		SpringLayout sl_topPanel = new SpringLayout();
+		topPanel.setLayout(sl_topPanel);
 		
 		//Start Button
 		start = new JButton();
+		sl_topPanel.putConstraint(SpringLayout.NORTH, start, 28, SpringLayout.NORTH, topPanel);
+		sl_topPanel.putConstraint(SpringLayout.WEST, start, 304, SpringLayout.WEST, topPanel);
+		sl_topPanel.putConstraint(SpringLayout.SOUTH, start, 64, SpringLayout.NORTH, topPanel);
+		sl_topPanel.putConstraint(SpringLayout.EAST, start, 388, SpringLayout.WEST, topPanel);
 		start.setFont(new Font("Tahoma", Font.BOLD, 14));
 		start.setText("Start");
-		start.setBounds(255, 69, 99, 38);
-		getContentPane().add(start);
+		topPanel.add(start);
 	
 		//Previous Button
 		prev = new JButton();
+		sl_topPanel.putConstraint(SpringLayout.NORTH, prev, 11, SpringLayout.SOUTH, start);
+		sl_topPanel.putConstraint(SpringLayout.WEST, prev, -52, SpringLayout.EAST, start);
 		prev.setFont(new Font("Tahoma", Font.BOLD, 12));
 		prev.setText("Prev");
-		prev.setBounds(281, 74, 69, 31);
-		getContentPane().add(prev);
+		topPanel.add(prev);
 		
 		//Next Button
 		next = new JButton();
+		sl_topPanel.putConstraint(SpringLayout.SOUTH, prev, 0, SpringLayout.SOUTH, next);
+		sl_topPanel.putConstraint(SpringLayout.EAST, prev, -6, SpringLayout.WEST, next);
+		sl_topPanel.putConstraint(SpringLayout.WEST, next, 415, SpringLayout.WEST, topPanel);
 		next.setFont(new Font("Tahoma", Font.BOLD, 12));
 		next.setText("Next");
-		next.setBounds(364, 74, 69, 31);
-		getContentPane().add(next);
+		topPanel.add(next);
 		
-		//That Movement text
-		title = new JTextField("Movement");
-		title.setLocation(122, 11);
-		title.setSize(170, 50);		
-		title.setHorizontalAlignment(SwingConstants.CENTER);
-		title.setEditable(false);
-		title.setForeground(Color.DARK_GRAY);
-		title.setFont(font1);
-		getContentPane().add(title);
+		showMap = new JButton();
+		sl_topPanel.putConstraint(SpringLayout.NORTH, next, 0, SpringLayout.NORTH, showMap);
+		sl_topPanel.putConstraint(SpringLayout.SOUTH, next, 0, SpringLayout.SOUTH, showMap);
+		sl_topPanel.putConstraint(SpringLayout.EAST, next, -6, SpringLayout.WEST, showMap);
+		sl_topPanel.putConstraint(SpringLayout.NORTH, showMap, 75, SpringLayout.NORTH, topPanel);
+		sl_topPanel.putConstraint(SpringLayout.WEST, showMap, 494, SpringLayout.WEST, topPanel);
+		sl_topPanel.putConstraint(SpringLayout.SOUTH, showMap, 106, SpringLayout.NORTH, topPanel);
+		sl_topPanel.putConstraint(SpringLayout.EAST, showMap, 598, SpringLayout.WEST, topPanel);
+		showMap.setFont(new Font("Tahoma", Font.BOLD, 12));
+		showMap.setText("Show Map");
+		topPanel.add(showMap);
+		
+
 		
 		//Will show the data of person
 		result = new JTextArea("",5,5);
@@ -127,9 +231,10 @@ public class MovementSimulatorFrame extends JFrame{
 		result.setSize(393, 490);
 		result.setWrapStyleWord(true);
 		result.setFont(font3);
-		result.setLineWrap(true);
+//		result.setLineWrap(true);
 		result.setEditable(false);
-		getContentPane().add(result);
+		midLeftPanel.setViewportView(result);
+	
 		
 		//show number of child, adult and senior
 		data = new JTextArea("",5,5);
@@ -137,76 +242,96 @@ public class MovementSimulatorFrame extends JFrame{
 		data.setSize(169, 260);
 		data.setWrapStyleWord(true);
 		data.setFont(font3);
-		data.setLineWrap(true);
 		data.setEditable(false);
-		getContentPane().add(data);
+		midRightPanel.setViewportView(data);
+		
+		/*
+		 * JTextField
+		 */
+		
+		//That Movement text
+		title = new JTextField("Movement");
+		sl_topPanel.putConstraint(SpringLayout.NORTH, title, 12, SpringLayout.NORTH, topPanel);
+		sl_topPanel.putConstraint(SpringLayout.WEST, title, 100, SpringLayout.WEST, topPanel);
+		title.setHorizontalAlignment(SwingConstants.CENTER);
+		title.setEditable(false);
+		title.setForeground(Color.DARK_GRAY);
+		title.setFont(font1);
+		topPanel.add(title);
 		
 		//name button
 		name = new JTextField("Name");
+		sl_topPanel.putConstraint(SpringLayout.NORTH, name, 76, SpringLayout.NORTH, topPanel);
+		sl_topPanel.putConstraint(SpringLayout.WEST, name, 48, SpringLayout.WEST, topPanel);
+		sl_topPanel.putConstraint(SpringLayout.EAST, name, 121, SpringLayout.WEST, topPanel);
 		name.setHorizontalAlignment(SwingConstants.CENTER);
 		name.setEditable(false);
-		name.setLocation(37, 72);
-		name.setSize(70, 31);
 		name.setFont(font2);
-		getContentPane().add(name);
+		topPanel.add(name);
 		
 		//Will search name in text file folder and show it on result
 		search = new JTextField(20);
-		search.setBounds(122, 72, 134, 31);
+		sl_topPanel.putConstraint(SpringLayout.NORTH, search, 76, SpringLayout.NORTH, topPanel);
+		sl_topPanel.putConstraint(SpringLayout.WEST, search, 131, SpringLayout.WEST, topPanel);
+		sl_topPanel.putConstraint(SpringLayout.EAST, search, 312, SpringLayout.WEST, topPanel);
 		search.setFont(font2);
-		getContentPane().add(search);
+		topPanel.add(search);
+		GroupLayout groupLayout = new GroupLayout(getContentPane());
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(21)
+							.addComponent(midLeftPanel, GroupLayout.PREFERRED_SIZE, 411, GroupLayout.PREFERRED_SIZE)
+							.addGap(10)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGap(7)
+									.addComponent(midRightPanel, GroupLayout.PREFERRED_SIZE, 194, GroupLayout.PREFERRED_SIZE))
+								.addComponent(bottomRightPanel, GroupLayout.PREFERRED_SIZE, 209, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(topPanel, GroupLayout.PREFERRED_SIZE, 641, GroupLayout.PREFERRED_SIZE)))
+					.addGap(10))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(topPanel, GroupLayout.PREFERRED_SIZE, 106, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(midLeftPanel, GroupLayout.PREFERRED_SIZE, 490, GroupLayout.PREFERRED_SIZE)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(midRightPanel, GroupLayout.PREFERRED_SIZE, 260, GroupLayout.PREFERRED_SIZE)
+							.addGap(11)
+							.addComponent(bottomRightPanel, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE))))
+		);
+		getContentPane().setLayout(groupLayout);
 		
-		//Title for enter simulation
-		enter = new JTextField("Simulation");
-		enter.setLocation(460, 399);
-		enter.setSize(170, 50);		
-		enter.setHorizontalAlignment(SwingConstants.CENTER);
-		enter.setEditable(false);
-		enter.setForeground(Color.DARK_GRAY);
-		enter.setFont(font1);
-		getContentPane().add(enter);
+
 		
-		//Name sim indicator
-		nameT = new JTextField("Name");
-		nameT.setHorizontalAlignment(SwingConstants.CENTER);
-		nameT.setEditable(false);
-		nameT.setLocation(450, 460);
-		nameT.setSize(70, 31);
-		nameT.setFont(new Font("Arial", Font.BOLD, 18));
-		getContentPane().add(nameT);
+//		sc = new JScrollPane(result,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+//		getContentPane().add(sc);
+//		sc.setVisible(true);
+//		
+//		result.setEditable(true);
 		
-		//Name sim input
-		nameI = new JTextField();
-		nameI.setLocation(530, 460);
-		nameI.setSize(100, 31);
-		nameI.setFont(new Font("Arial", Font.BOLD, 18));
-		getContentPane().add(nameI);
-		
-		//Day sim indicator
-		dayT = new JTextField("Day");
-		dayT.setHorizontalAlignment(SwingConstants.CENTER);
-		dayT.setEditable(false);
-		dayT.setLocation(450, 502);
-		dayT.setSize(70, 31);
-		dayT.setFont(new Font("Arial", Font.BOLD, 18));
-		getContentPane().add(dayT);
-		
-		//Day sim input
-		dayI = new JTextField();
-		dayI.setLocation(530, 502);
-		dayI.setSize(100, 31);
-		dayI.setFont(new Font("Arial", Font.BOLD, 18));
-		getContentPane().add(dayI);
 		
 		//Call to set everything but Start button to invisible
 		visible(false);
 		
+
+		
 		//Will handle all action on item it set
 		Handler handler = new Handler();
 		start.addActionListener(handler);
-		nameI.addActionListener(handler);
 		dayI.addActionListener(handler);
-		
+		nameI.addActionListener(handler);
+		showMap.addActionListener(handler);
+		next.addActionListener(handler);
+		prev.addActionListener(handler);
 	}
 	
 	//only called once
@@ -214,7 +339,6 @@ public class MovementSimulatorFrame extends JFrame{
 
 		search.setVisible(b);
 		name.setVisible(b);
-		result.setVisible(b);
 		data.setVisible(b);
 		prev.setVisible(b);
 		next.setVisible(b);
@@ -223,6 +347,11 @@ public class MovementSimulatorFrame extends JFrame{
 		nameI.setVisible(b);
 		dayT.setVisible(b);
 		dayI.setVisible(b);
+		showMap.setVisible(b);
+		midRightPanel.setVisible(b);
+		
+
+		
 		
 	}
 	
@@ -231,14 +360,48 @@ public class MovementSimulatorFrame extends JFrame{
 	 *For now it is just a dummy 
 	 */
 	private void startSimulation() {
-		String profile = "Name:\nAge:\nRelated with:\nAwareness and Education Score:\nSchedule\nDay 1\n\nDay2";
-		String stat = "Children:\nAdult:\nSenior:\n";
-		result.setText(profile);
-		data.setText(stat);
+		start.setEnabled(false);
+		map = new Map();
+		try {
+			moveAlgo = new MovementSimulatorAlgorithm(this,map);
+			childList = moveAlgo.getChildList();
+			adultList = moveAlgo.getAdultList();
+			seniorList = moveAlgo.getSeniorList();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		start.setVisible(false);
+		visible(true);
 	}
 	
-	int x = 0; //just temporary 
+	private void setNext() {
+		if(adultIterator.hasNext())
+			result.setText(adultIterator.next().toString());
+	}
 	
+	private void setPrev() {
+		if(adultIterator.hasPrevious())
+			result.setText(adultIterator.previous().toString());
+	}
+	
+	private void randomize() {
+		Children tempC;
+    	Adult tempA;
+    	Senior tempS;
+		
+		childIterator = childList.getListIterator();
+		adultIterator = adultList.getListIterator();
+		seniorIterator = seniorList.getListIterator();
+		
+		tempA = adultIterator.next();
+		result.setText(tempA.toString());
+	}
+	
+	public void setLoad(String str) {
+		result.setText(str);
+	}
+
 	
 	/**
 	 * 
@@ -251,16 +414,8 @@ private class Handler implements ActionListener{
 		public void actionPerformed(ActionEvent event) {
 			
 			if(event.getSource()==start) {
-				if(x==0) {
-					result.setVisible(true);
-					result.setText("Loading...");
-
-					x++;
-				}else {
-					start.setVisible(false);
-					startSimulation();
-					visible(true);
-				}
+				startSimulation();
+				randomize();
 			}
 			
 			if(event.getSource()==dayI||event.getSource()==nameI) {
@@ -271,9 +426,24 @@ private class Handler implements ActionListener{
 					infectSim.setLocationRelativeTo(null);
 				}
 			}
+			if(event.getSource()==next) {
+				setNext();
+			}
+			if(event.getSource()==prev) {
+				setPrev();
+			}
 			
+			
+//			if(event.getSource()==showMap) {
+////				map = new Map();
+////				result.setText(map.toString());
+//				MapFrame mapframe = new MapFrame();
+//				mapframe.setSize(500,500);
+//				mapframe.setVisible(true);
+//				mapframe.setLocationRelativeTo(null);
+//				
+//			}
+//			
 		}
 }
-
-	
 }

@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -66,6 +67,9 @@ public class InfectionSimulatorFrame extends JFrame{
 	private Font font2;
 	private Font font3;
 	
+	private JScrollPane midLeftPanel;
+	private JScrollPane midRightPanel;
+	
 	private int name;
 	private int day;
 	
@@ -81,6 +85,17 @@ public class InfectionSimulatorFrame extends JFrame{
 		font2 = new Font("Arial", Font.BOLD, 20);
 		font3 = new Font("Arial", Font.PLAIN, 18);
 		getContentPane().setLayout(null);
+		
+		midLeftPanel = new JScrollPane();
+		midLeftPanel.setLocation(10, 128);
+		midLeftPanel.setSize(406, 326);
+		getContentPane().add(midLeftPanel);
+		
+		midRightPanel = new JScrollPane();
+		midRightPanel.setLocation(426, 128);
+		midRightPanel.setSize(135, 214);
+		getContentPane().add(midRightPanel);
+		
 		
 		//That Infected Simulation text
 		title = new JTextField("Infected Simulation");
@@ -141,9 +156,8 @@ public class InfectionSimulatorFrame extends JFrame{
 		result.setBounds(23, 128, 393, 300);
 		result.setWrapStyleWord(true);
 		result.setFont(font3);
-		result.setLineWrap(true);
 		result.setEditable(false);
-		getContentPane().add(result);
+		midLeftPanel.setViewportView(result);
 		
 		//show number of infected and contacted
 		data = new JTextArea("",5,5);
@@ -153,7 +167,8 @@ public class InfectionSimulatorFrame extends JFrame{
 		data.setFont(font3);
 		data.setLineWrap(true);
 		data.setEditable(false);
-		getContentPane().add(data);
+		midRightPanel.setViewportView(data);
+
 		
 		Handler handler = new Handler();
 		infected.addActionListener(handler);
