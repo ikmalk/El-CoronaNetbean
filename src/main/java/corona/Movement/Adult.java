@@ -1,7 +1,8 @@
 package corona.Movement;
 
-import test.Map;
 import java.util.Random;
+
+import corona.map.Map;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -332,4 +333,16 @@ public class Adult extends Person {
     public void setMap(Map map) {
         this.map = map;
     }
-}
+    
+    public String toString() {
+    	String str = "";
+    	str+="ID: " + getID() + "\nGender: " + getGender() + "\nAge: "
+                + getAge() + "\nJob: " + getJob() + "\n Infection rate: " + getInfectionRate()+"\n";
+    	try {
+			str+=getEventToString();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	return str;
+    	
+    }}

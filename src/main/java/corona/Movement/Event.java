@@ -1,7 +1,8 @@
 package corona.Movement;
 
-import test.*;
 import java.util.Random;
+
+import corona.map.*;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -382,7 +383,8 @@ public class Event {
         return str;
     }
 
-    public void shownOnTheMap(Map map) throws Exception {
+    @SuppressWarnings("unchecked")
+	public void shownOnTheMap(Map map) throws Exception {
         int i;
         int j;
         int ranInd;
