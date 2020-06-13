@@ -120,9 +120,26 @@ public class Senior extends Person {
     }
 
     public void setImmunity() {
-        Random r = new Random();
-        int randomRate = r.nextInt(60);
-        immunity = (1 - (10 + (double) randomRate) / 100);
+        //Random r = new Random();
+        //int randomRate = r.nextInt(60);
+        //immunity = (1 - (10 + (double) randomRate) / 100);
+        switch(jobCase){
+            case 0://retired employee
+                immunity = 0.763;
+                break;
+            case 1://professor
+                immunity = 0.677;
+                break;
+            case 2://self-employed
+                immunity = 0.789;
+                break;
+            case 3://retired worker
+                immunity = 0.785;
+                break;
+            case 4://retail owner
+                immunity = 0.873;
+                break;
+        }
     }
 
     public Integer getID() {

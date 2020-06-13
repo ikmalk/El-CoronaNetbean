@@ -251,8 +251,73 @@ public class Adult extends Person {
     }
 
     public void setImmunity() {
-        Random r = new Random();
-        immunity = 1 - (5 + ((double) r.nextInt(46))) / 100;
+        //Random r = new Random();
+        //immunity = 1 - (5 + ((double) r.nextInt(46))) / 100;
+        switch(jobCase){
+                    case 0://doctor
+                        immunity = 0.887;
+                        break;
+                    case 1://nurse
+                        immunity = 0.887;
+                        break;
+                    case 2://police
+                        immunity = 0.758;
+                        break;
+                    case 3://crew atttendant
+                        immunity = 0.851;
+                        break;
+                    case 4://secretary
+                        immunity = 0.736;
+                        break;
+                    case 5://plumber
+                        immunity = 0.683;
+                        break;
+                    case 6://teacher
+                        immunity = 0.726;
+                        break;
+                    case 7://college student
+                        immunity = 0.785;
+                        break;
+                    case 8://shopkeeper
+                        immunity = 0.859;
+                        break;
+                    case 9://bank clerk
+                        immunity = 0.826;
+                        break;
+                    case 10://waiter
+                        immunity = 0.728;
+                        break;
+                    case 11://chef
+                        immunity = 0.698;
+                        break;
+                    case 12://staff
+                        immunity = 0.758;
+                        break;
+                    case 13://engineer
+                        immunity = 0.773;
+                        break;
+                    case 14://worker
+                        immunity = 0.754;
+                        break;
+                    case 15://businessman
+                        immunity = 0.883;
+                        break;
+                    case 16://guard
+                        immunity = 0.696;
+                        break;
+                    case 17://bus driver
+                        immunity = 0.859;
+                        break;
+                    case 18://courier
+                        immunity = 0.891;
+                        break;
+                    case 19://pilot
+                        immunity = 0.845;
+                        break;
+                    case 20://politician
+                        immunity = 0.826;
+                        break;
+                }
     }
 
     public void setInfectionRate() throws Exception {

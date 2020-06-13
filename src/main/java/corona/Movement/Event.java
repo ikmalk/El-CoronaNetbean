@@ -3,6 +3,7 @@ package corona.Movement;
 import java.util.Random;
 
 import corona.map.*;
+import test.Map;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -58,6 +59,7 @@ public class Event {
 
     public void setEvent(int ageGroup, int jobCase) {
         Random r = new Random();
+        /*
         switch (ageGroup) {
             case 0://child
                 if (jobCase == 0) {//kid
@@ -349,6 +351,164 @@ public class Event {
                             }
                             event[SIZE - 1] = r.nextInt(2) == 0 ? 5 : 11;
                         }
+                        break;
+                }
+                break;
+        }
+        */
+        switch(ageGroup){
+            case 0://children
+                if(jobCase==0){ //kid
+                    event[0] = 3;
+                    event[1] = 6;
+                    event[2] = 0;
+                }
+                else if(jobCase==1){ //pupil
+                    event[0] = 1;
+                    event[1] = 9;
+                    event[2] = 0;
+                }
+                else{ //student
+                    event[0] = 1;
+                    event[1] = 3;
+                    event[2] = 0;
+                }
+                break;
+            case 1://adult
+                switch(jobCase){
+                    case 0://doctor
+                        event[0] = 3;
+                        event[1] = 6;
+                        event[2] = 3;
+                        break;
+                    case 1://nurse
+                        event[0] = 3;
+                        event[1] = 7;
+                        event[2] = 0;
+                        break;
+                    case 2://police
+                        event[0] = 12;
+                        event[1] = 10;
+                        event[2] = 0;
+                        break;
+                    case 3://crew attendant
+                        event[0] = 3;
+                        event[1] = 7;
+                        event[2] = 0;
+                        break;
+                    case 4://secretary
+                        event[0] = 2;
+                        event[1] = 7;
+                        event[2] = 5;
+                        break;
+                    case 5://Plumber
+                        event[0] = 11;
+                        event[1] = 2;
+                        event[2] = 4;
+                        break;
+                    case 6://Teacher
+                        event[0] = 2;
+                        event[1] = 5;
+                        event[2] = 6;
+                        break;
+                    case 7://college student
+                        event[0] = 7;
+                        event[1] = 1;
+                        event[2] = 9;
+                        break;
+                    case 8://shopkeeper
+                        event[0] = 6;
+                        event[1] = 10;
+                        event[2] = 4;
+                        break;
+                    case 9://bank clerk
+                        event[0] = 4;
+                        event[1] = 5;
+                        event[2] = 7;
+                        break;
+                    case 10://waiter
+                        event[0] = 4;
+                        event[1] = 9;
+                        event[2] = 0;
+                        break;
+                    case 11://chef
+                        event[0] = 4;
+                        event[1] = 3;
+                        event[2] = 0;
+                        break;
+                    case 12://staff
+                        event[0] = 2;
+                        event[1] = 6;
+                        event[2] = 11;
+                        break;
+                    case 13://engineer
+                        event[0] = 11;
+                        event[1] = 7;
+                        event[2] = 5;
+                        break;
+                    case 14://worker
+                        event[0] = 8;
+                        event[1] = 9;
+                        event[2] = 10;
+                        break;
+                    case 15://businessman
+                        event[0] = 11;
+                        event[1] = 5;
+                        event[2] = 2;
+                        break;
+                    case 16://guard
+                        event[0] = 5;
+                        event[1] = 7;
+                        event[2] = 1;
+                        break;
+                    case 17://bus driver
+                        event[0] = 7;
+                        event[1] = 12;
+                        event[2] = 11;
+                        break;
+                    case 18://courier
+                        event[0] = 2;
+                        event[1] = 11;
+                        event[2] = 8;
+                        break;
+                    case 19://pilot
+                        event[0] = 8;
+                        event[1] = 2;
+                        event[2] = 6;
+                        break;
+                    case 20://politician
+                        event[0] = 11;
+                        event[1] = 4;
+                        event[2] = 3;
+                        break;
+                }
+                break;
+            case 2://senior
+                switch(jobCase){
+                    case 0://retired employee
+                        event[0] = 9;
+                        event[1] = 7;
+                        event[2] = 12;
+                        break;
+                    case 1://professor
+                        event[0] = 2;
+                        event[1] = 5;
+                        event[2] = 11;
+                        break;
+                    case 2://self employed
+                        event[0] = 2;
+                        event[1] = 6;
+                        event[2] = 5;
+                        break;
+                    case 3://retired worker
+                        event[0] = 4;
+                        event[1] = 9;
+                        event[2] = 3;
+                        break;
+                    case 4://retail owner
+                        event[0] = 6;
+                        event[1] = 7;
+                        event[2] = 4;
                         break;
                 }
                 break;
