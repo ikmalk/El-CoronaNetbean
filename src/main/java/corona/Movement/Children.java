@@ -70,8 +70,20 @@ public class Children extends Person {
     }
 
     public void setImmunity() {
-        Random r = new Random();
-        immunity = 1 - ((double) r.nextInt(31)) / 100;
+        //Random r = new Random();
+        //immunity = 1 - ((double) r.nextInt(31)) / 100;
+            //children
+            switch(jobCase){
+                case 0://kid
+                    immunity = 0.897;
+                    break;
+                case 1://pupil
+                    immunity = 0.854;
+                    break;
+                case 2://student
+                    immunity = 0.796;
+                    break;
+            }
     }
 
     public void setInfectionRate() throws Exception {
