@@ -2,6 +2,13 @@ package corona.simulator;
 
 public class MapPlace {
 	
+	/***********************************
+	 * Created at 11/6/2020
+	 * -A class that will place all building coordinate according to the map in map package
+	 * -Used solely to get the Place array only
+	 * 
+	 */
+	
 	private Place[] place;
 	
 	public MapPlace() {

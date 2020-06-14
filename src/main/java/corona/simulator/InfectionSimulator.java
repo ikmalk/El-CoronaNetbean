@@ -12,6 +12,18 @@ import java.util.Random;
 @SuppressWarnings("serial")
 public class InfectionSimulator extends Canvas implements Runnable {
 	
+	/***********************************
+	 * Created at 11/6/2020
+	 * 
+	 * -This is the Simulator for the infection
+	 * -It will take the DoubleLinkedList from the Movement Simulator and the people who is infected
+	 * -It will on a clock that will update every frame, have a loop method that runs until closed
+	 * 
+	 * *********************************
+	 * 
+	 */
+	
+	
 	public static final int WIDTH = 900, HEIGHT = 690; 
 	
 	private Thread thread;
@@ -24,11 +36,8 @@ public class InfectionSimulator extends Canvas implements Runnable {
 	
 	private Random g;
 	
-	
-	
-
-	
 	public static STATE State = STATE.Menu;
+	
 	
 	public InfectionSimulator() {
 		
@@ -39,26 +48,18 @@ public class InfectionSimulator extends Canvas implements Runnable {
 		
 		new Window(WIDTH, HEIGHT, "Simulator", this);
 		
-		
-		
-		
-			
-			
-			
-			
-//			handler.addObject(new Player(WIDTH/2 - 32, HEIGHT/2 - 32, ID.Player, handler));
-//			handler.addObject(new BasicEnemy(g.nextInt(Game.WIDTH - 50), g.nextInt(Game.HEIGHT - 50), ID.BasicEnemy, handler));
-				
-		/*  //this is for menu particle which brings more problem than good
-		else {
-			for(int i = 0; i<10; i++) {
-				handler.addObject(new MenuParticle(g.nextInt(WIDTH), g.nextInt(HEIGHT), ID.MenuParticle, handler));
-			}
-		}
-		*/
+		/*
+		 * Need code for list																		
+		 */
 		
 	}
-
+	
+	/*
+	 * -Called from the Menu class
+	 * -starts the handler class that will add all the item
+	 * -Begins the simulation
+	 */
+			
 	public void spawn(){
 
 		Place[] place = new MapPlace().getPlace();
@@ -94,7 +95,11 @@ public class InfectionSimulator extends Canvas implements Runnable {
 		}
 	}
 	
-	//the simulation loop (clock)
+	/*
+	 * -This is the program main loop
+	 * -It will update each frame
+	 * -Call the render and tick method
+	 */
 	public void run(){
 		  this.requestFocus();
 		  long lastTime = System.nanoTime();				 // get current time to the nanosecond
@@ -130,6 +135,10 @@ public class InfectionSimulator extends Canvas implements Runnable {
 		  stop();										 	// no longer running stop the thread
 		 }
 	
+	/*
+	 * -This is the method that will call all the classes' tick method
+	 * -tick method responsible for updating all the value of variable in the class
+	 */		
 	private void tick(){
 		handler.tick();
 		if(State == STATE.Simulation) {
@@ -149,6 +158,11 @@ public class InfectionSimulator extends Canvas implements Runnable {
 		
 	}
 	
+	/*
+	 * -This is the method that will call all the render method in each classes
+	 * -render method responsible for the graphic of the programs
+	 * -this is the one that will visualize the movement of each of the item
+	 */
 	private void render() {
 		BufferStrategy bs = this.getBufferStrategy();
 		if(bs == null) {
@@ -173,10 +187,7 @@ public class InfectionSimulator extends Canvas implements Runnable {
 		else if(State == STATE.Menu) {
 			menu.render(g);
 		}
-		
-		
-		
-		
+				
 		g.dispose();
 		bs.show();
 		

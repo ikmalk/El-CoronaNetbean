@@ -6,6 +6,11 @@ import java.awt.Rectangle;
 
 public abstract class Item {
 	
+	/***********************************
+	 * Created at 11/6/2020
+	 * An abstract class that will be inherited to the Person and Place class
+	 */
+	
 	protected float x;
 	protected float y;
 	protected float velX, velY;

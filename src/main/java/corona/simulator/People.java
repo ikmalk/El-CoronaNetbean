@@ -7,7 +7,18 @@ import java.awt.Rectangle;
 import java.util.Random;
 
 public class People extends Item{
-
+	
+	/***********************************
+	 * Created at 11/6/2020
+	 * -This is the people class
+	 * -It will have a String[][] event that will determine the movement of the people(not done)
+	 * -It will get the Place that have the same name as in the event and get the place coordinate and and went to that place(need String[][] event)
+	 * -Have 3 states, Suspected, Infected, Removed
+	 * -Suspected will become Infected if collides with Infected INSIDE the place
+	 * -Infected becomes Removed after 14 days
+	 * 
+	 */
+	
 	private Handler handler;
 	private Place target;
 	private int count;
@@ -62,10 +73,9 @@ public class People extends Item{
 	public void tick() {
 		
 		
-//		handler.addObject(new Trail(x, y, ID.Trail, Color.green, 16, 16, 0.02f, handler)); //This is for that tail effect
 		if(collision()) {			
 			counting=false;
-		}else {
+		}else { 				//this is just to get the avg time of the people's movement from one place to another, can ignore this thing
 			if(counting) {
 				timeTaken++;
 			}else {
@@ -92,6 +102,8 @@ public class People extends Item{
 	}
 	
 	private boolean collision() {
+		
+		//Person is inside the Place
 		if(getBounds().intersects(target.getBounds())) {
 			if(n<190) {
 				x += velX;
@@ -119,7 +131,7 @@ public class People extends Item{
 					if(x <= target.getBounds().x || x >= target.getBounds().x+k) 
 						velX *= -1;
 				}
-				
+												
 				if(health==HEALTH.Suspected) { //where the infection happen
 					for(int i = 0;i<handler.object.size();i++) {
 						Item temp = handler.object.get(i);
@@ -127,7 +139,7 @@ public class People extends Item{
 							People tempP = (People)temp;
 							if(tempP.getHealth()==HEALTH.Infected) {
 								if(getBounds().intersects(tempP.getBounds())) {
-									if(r.nextInt(600)<chance) {
+									if(r.nextInt(600)<chance) {    //temporary, will get the person's immunity later
 										setHealth(HEALTH.Infected);
 										dayInfected = hud.getDay();
 										hud.setInfected(hud.getInfected()+1);
@@ -138,19 +150,16 @@ public class People extends Item{
 						}
 					}
 				}
-				else if(health==HEALTH.Infected) {
-					if(hud.getDay()-dayInfected>=14) {
-						health=HEALTH.Removed;
-						hud.setRemoved(hud.getRemoved()+1);
-					}
-				}
+				
 			}
 			else {
 				target = place[r.nextInt(count)];
 				
 			}
 			return true;
-		}else { 
+		}
+		//Outside place
+		else { 
 			n=0;
 		//so that there will be no confusion in collision
 			x += velX;
@@ -158,14 +167,27 @@ public class People extends Item{
 			
 			float diffX = x - target.getX() - 10;
 			float diffY = y - target.getY() - 10;
+			/*
+			 * The equation to get the place coordinate
+			 */
 			float distance = (float) Math.sqrt((x- target.getX())*(x-target.getX()) + (y - target.getY())*(y-target.getY()));
 			
-			
+			/*
+			 * The person wil chase the place according to coordinate
+			 */			
 			velX = (float)((-1.0/distance)* diffX);
 			velY =  (float)((-1.0/distance)* diffY);
 			
 			if(y <= 0 || y >= InfectionSimulator.HEIGHT - 64 + 16) velY *= -1;
 			if(x <= 0 || x >= InfectionSimulator.WIDTH - 32) velX *= -1;
+		}
+		
+		//Turns infected into Removed after 14 days
+		if(health==HEALTH.Infected) {
+			if(hud.getDay()-dayInfected>=14) {
+				health=HEALTH.Removed;
+				hud.setRemoved(hud.getRemoved()+1);
+			}
 		}
 		return false;
 	}

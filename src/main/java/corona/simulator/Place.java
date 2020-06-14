@@ -6,6 +6,13 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 public class Place extends Item{
+	
+
+	/***********************************
+	 * Created at 11/6/2020
+	 * A building class
+	 * Created at the MapPlace class
+	 */
 
 	private int sizeX;
 	private int sizeY;

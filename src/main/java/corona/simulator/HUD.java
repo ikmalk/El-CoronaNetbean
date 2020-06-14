@@ -6,6 +6,12 @@ import java.awt.Graphics;
 
 public class HUD {
 		
+	/***********************************
+	 * Created at 11/6/2020
+	 * -Handles the day, suspected, infection and removed count
+	 * -Updates it accordingly
+	 */
+	
 	private int suspected;
 	private int infected;
 	private int removed;
