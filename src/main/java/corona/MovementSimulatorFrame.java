@@ -2,9 +2,11 @@ package corona;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ListIterator;
+import java.util.Random;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -17,18 +19,20 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
+import javax.swing.text.DefaultCaret;
 
 import corona.Movement.Adult;
 import corona.Movement.Children;
 import corona.Movement.MovementSimulatorAlgorithm;
+import corona.Movement.Person;
 import corona.Movement.Senior;
 import corona.map.Map;
 
 @SuppressWarnings("serial")
 public class MovementSimulatorFrame extends JFrame{
 
-	/*
-	 * *************************************
+	/**
+	 ***************************************
 	 ***Created at 31/5/2020
 	 *
 	 *This the GUI for the Movement Simulator
@@ -40,17 +44,25 @@ public class MovementSimulatorFrame extends JFrame{
 	 *Ikmal 31/5/2020
 	 *Set up all the basic GUI stuff
 	 *
+	 *Ikmal 10/6/2020
+	 *Merge the MovementSimulatorAlgorithm to the frame
+	 *
+	 *Ikmal 11/6/2020
+	 *Implement the next and prev button
+	 *Add search method
+	 *
 	 **************************************
 	 ***To do list
-	 *-implement an iterator from a double-linked list for prev and next button(not done)
+	 *-implement an iterator from a double-linked list for prev and next button(done)
 	 *-implement all handler class action(not done)
-	 *-add Scroll for all JTextArea if possible(not done)
+	 *-add Scroll for all JTextArea if possible(after two semester, finally found the solution)
 	 *-add show adult, children and senior button(not done)
+	 *-add search method(done)
 	 *
 	 **************************************
 	 ***Handler class action
 	 *
-	 **start button(not done)
+	 **start button
 	 *-it will start the simulation
 	 *-while the simulation is loading, set result to visible and set text to "Loading"
 	 *-after the simulation is complete, call visible method to true
@@ -58,11 +70,11 @@ public class MovementSimulatorFrame extends JFrame{
 	 *-set number of children, adult and senior to data
 	 *-set iterator for prev and next
 	 *
-	 **search(not done)
+	 **search
 	 *-find said person and set the text to result
 	 *-reset the iterator pointing at said person
 	 *
-	 **prev & next (not done)
+	 **prev & next
 	 *-find the previous or next person from the iterator and set it to result
 	 *
 	 **NameI & DayI
@@ -86,7 +98,7 @@ public class MovementSimulatorFrame extends JFrame{
 	private JButton start;
 	private JButton prev;
 	private JButton next;
-	private JButton showMap;
+//	private JButton showMap;
 		
 	private Font font1;
 	private Font font2;
@@ -104,15 +116,25 @@ public class MovementSimulatorFrame extends JFrame{
 	private DoubleLinkedList<Children> childList;
 	private DoubleLinkedList<Adult> adultList;
 	private DoubleLinkedList<Senior> seniorList;
+	private DoubleLinkedList<Person> list;
 	
 	private ListIterator<Children> childIterator;
 	private ListIterator<Adult> adultIterator;
 	private ListIterator<Senior> seniorIterator;
+	private ListIterator<Person> iterator;
 	
 	private Map map;
 	
 	
 	public MovementSimulatorFrame() {
+		
+		/*
+		 *********************************************************
+		 * The constructor is just for GUI code, all action were *
+		 * determined at the private Handler class at the bottom *
+		 *********************************************************
+		 */
+		
 		super("Movement");
 		requestFocus();
 		
@@ -197,31 +219,33 @@ public class MovementSimulatorFrame extends JFrame{
 		//Previous Button
 		prev = new JButton();
 		sl_topPanel.putConstraint(SpringLayout.NORTH, prev, 11, SpringLayout.SOUTH, start);
-		sl_topPanel.putConstraint(SpringLayout.WEST, prev, -52, SpringLayout.EAST, start);
+		sl_topPanel.putConstraint(SpringLayout.SOUTH, prev, -1, SpringLayout.SOUTH, topPanel);
+		sl_topPanel.putConstraint(SpringLayout.EAST, prev, -209, SpringLayout.EAST, topPanel);
 		prev.setFont(new Font("Tahoma", Font.BOLD, 12));
 		prev.setText("Prev");
 		topPanel.add(prev);
 		
 		//Next Button
 		next = new JButton();
-		sl_topPanel.putConstraint(SpringLayout.SOUTH, prev, 0, SpringLayout.SOUTH, next);
-		sl_topPanel.putConstraint(SpringLayout.EAST, prev, -6, SpringLayout.WEST, next);
-		sl_topPanel.putConstraint(SpringLayout.WEST, next, 415, SpringLayout.WEST, topPanel);
+		sl_topPanel.putConstraint(SpringLayout.NORTH, next, 75, SpringLayout.NORTH, topPanel);
+		sl_topPanel.putConstraint(SpringLayout.WEST, next, -191, SpringLayout.EAST, topPanel);
+		sl_topPanel.putConstraint(SpringLayout.SOUTH, next, -1, SpringLayout.SOUTH, topPanel);
+		sl_topPanel.putConstraint(SpringLayout.EAST, next, -101, SpringLayout.EAST, topPanel);
 		next.setFont(new Font("Tahoma", Font.BOLD, 12));
 		next.setText("Next");
 		topPanel.add(next);
 		
-		showMap = new JButton();
-		sl_topPanel.putConstraint(SpringLayout.NORTH, next, 0, SpringLayout.NORTH, showMap);
-		sl_topPanel.putConstraint(SpringLayout.SOUTH, next, 0, SpringLayout.SOUTH, showMap);
-		sl_topPanel.putConstraint(SpringLayout.EAST, next, -6, SpringLayout.WEST, showMap);
-		sl_topPanel.putConstraint(SpringLayout.NORTH, showMap, 75, SpringLayout.NORTH, topPanel);
-		sl_topPanel.putConstraint(SpringLayout.WEST, showMap, 494, SpringLayout.WEST, topPanel);
-		sl_topPanel.putConstraint(SpringLayout.SOUTH, showMap, 106, SpringLayout.NORTH, topPanel);
-		sl_topPanel.putConstraint(SpringLayout.EAST, showMap, 598, SpringLayout.WEST, topPanel);
-		showMap.setFont(new Font("Tahoma", Font.BOLD, 12));
-		showMap.setText("Show Map");
-		topPanel.add(showMap);
+//		showMap = new JButton();
+//		sl_topPanel.putConstraint(SpringLayout.NORTH, next, 0, SpringLayout.NORTH, showMap);
+//		sl_topPanel.putConstraint(SpringLayout.SOUTH, next, 0, SpringLayout.SOUTH, showMap);
+//		sl_topPanel.putConstraint(SpringLayout.EAST, next, -6, SpringLayout.WEST, showMap);
+//		sl_topPanel.putConstraint(SpringLayout.NORTH, showMap, 75, SpringLayout.NORTH, topPanel);
+//		sl_topPanel.putConstraint(SpringLayout.WEST, showMap, 494, SpringLayout.WEST, topPanel);
+//		sl_topPanel.putConstraint(SpringLayout.SOUTH, showMap, 106, SpringLayout.NORTH, topPanel);
+//		sl_topPanel.putConstraint(SpringLayout.EAST, showMap, 598, SpringLayout.WEST, topPanel);
+//		showMap.setFont(new Font("Tahoma", Font.BOLD, 12));
+//		showMap.setText("Show Map");
+//		topPanel.add(showMap);
 		
 
 		
@@ -234,6 +258,7 @@ public class MovementSimulatorFrame extends JFrame{
 //		result.setLineWrap(true);
 		result.setEditable(false);
 		midLeftPanel.setViewportView(result);
+		midLeftPanel.getViewport().setViewPosition( new Point(0, 0) );
 	
 		
 		//show number of child, adult and senior
@@ -271,6 +296,7 @@ public class MovementSimulatorFrame extends JFrame{
 		
 		//Will search name in text file folder and show it on result
 		search = new JTextField(20);
+		sl_topPanel.putConstraint(SpringLayout.WEST, prev, 36, SpringLayout.EAST, search);
 		sl_topPanel.putConstraint(SpringLayout.NORTH, search, 76, SpringLayout.NORTH, topPanel);
 		sl_topPanel.putConstraint(SpringLayout.WEST, search, 131, SpringLayout.WEST, topPanel);
 		sl_topPanel.putConstraint(SpringLayout.EAST, search, 312, SpringLayout.WEST, topPanel);
@@ -310,14 +336,12 @@ public class MovementSimulatorFrame extends JFrame{
 		);
 		getContentPane().setLayout(groupLayout);
 		
+		
+				
+		
+		DefaultCaret caret = (DefaultCaret)result.getCaret();
+		caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
 
-		
-//		sc = new JScrollPane(result,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-//		getContentPane().add(sc);
-//		sc.setVisible(true);
-//		
-//		result.setEditable(true);
-		
 		
 		//Call to set everything but Start button to invisible
 		visible(false);
@@ -329,9 +353,10 @@ public class MovementSimulatorFrame extends JFrame{
 		start.addActionListener(handler);
 		dayI.addActionListener(handler);
 		nameI.addActionListener(handler);
-		showMap.addActionListener(handler);
+//		showMap.addActionListener(handler);
 		next.addActionListener(handler);
 		prev.addActionListener(handler);
+		search.addActionListener(handler);
 	}
 	
 	//only called once
@@ -347,21 +372,26 @@ public class MovementSimulatorFrame extends JFrame{
 		nameI.setVisible(b);
 		dayT.setVisible(b);
 		dayI.setVisible(b);
-		showMap.setVisible(b);
+//		showMap.setVisible(b);
 		midRightPanel.setVisible(b);
-		
-
-		
 		
 	}
 	
 	/*
-	 *This to start the movement simulation algorithm that will be conducted in another class
-	 *For now it is just a dummy 
+	 *-called when the start button is clicked
+	 *-This to start the movement simulation algorithm that will be conducted in another class
+	 *-Initiate map class, initiate Algorithm and automatically start the algorithm
+	 *-get the children, adult and senior linked list
+	 *-calls randomize method to set the text area at random id
+	 *-set the iterator for each list at the randomize method
+	 *-use the iterator for the DoubleLinkedList list
+	 *-initiate the list iterator
+	 *-set result text to random id
 	 */
 	private void startSimulation() {
 		start.setEnabled(false);
 		map = new Map();
+		list = new DoubleLinkedList<>();
 		try {
 			moveAlgo = new MovementSimulatorAlgorithm(this,map);
 			childList = moveAlgo.getChildList();
@@ -373,40 +403,146 @@ public class MovementSimulatorFrame extends JFrame{
 		
 		start.setVisible(false);
 		visible(true);
+		randomize();
 	}
 	
+	
+	//called only once, see explanation at startSimulation method
+		private void randomize() {			
+	    	Person tempP = null;
+			
+			childIterator = childList.getListIterator();
+			adultIterator = adultList.getListIterator();
+			seniorIterator = seniorList.getListIterator();
+			
+			
+			while(childIterator.hasNext())
+				list.addRightNode(childIterator.next());
+			while(adultIterator.hasNext())
+				list.addRightNode(adultIterator.next());
+			while(seniorIterator.hasNext())
+				list.addRightNode(seniorIterator.next());
+					
+			String str = String.format("Child:\n"
+										+ "%d\n"
+										+ "Adult:\n"
+										+ "%d\n"
+										+ "Senior:\n"
+										+ "%d",childList.length(),adultList.length(),seniorList.length());
+			
+			data.setText(str);
+			
+			iterator = list.getListIterator();
+			
+			tempP = iterator.next();
+			result.setText(tempP.toString());
+			
+			/*
+			 * There was an error here when the prev button is clicked first and it
+			 * will call the NullPointerException error, and strangely enough clicking
+			 * the next button solves it, thus the method called below
+			 */
+			setNext();
+
+		}
+
+	private void search(int id) {
+		boolean found = false;
+		Person tempP = null;
+		if(iterator.hasNext())
+			tempP = iterator.next();
+		else if(iterator.hasPrevious())
+			tempP = iterator.previous();
+		
+		int n = tempP.getID();
+		if(n<id) {
+			while(iterator.hasNext()) {
+				tempP=iterator.next();
+				if(tempP.getID()==id) {
+					found = true;
+					break;
+				}
+			}				
+		}
+		else {
+			while(iterator.hasPrevious()) {
+				tempP=iterator.previous();
+				if(tempP.getID()==id) {
+					found = true;
+					break;
+				}				
+			}
+		}
+		
+		
+		
+		if(found)
+			result.setText(tempP.toString());
+		else { //to reset the iterator
+			result.setText("Id not found");
+			if(iterator.hasNext()) {
+			while(iterator.hasNext()) {
+				tempP=iterator.next();
+				if(tempP.getID()==n) {
+					return;
+				}
+			}
+			}
+			else {
+				while(iterator.hasPrevious()) {
+					tempP=iterator.previous();
+					if(tempP.getID()==n) {
+						return;
+					}
+				}
+			}
+		}
+	}
+	
+	
+	
+	//called when next button is clicked
 	private void setNext() {
-		if(adultIterator.hasNext())
-			result.setText(adultIterator.next().toString());
+		if(iterator.hasNext()) {
+			result.setText(iterator.next().toString());			
+			if(!prev.isEnabled())
+				prev.setEnabled(true);
+		}
+		if(!iterator.hasNext()) {
+			next.setEnabled(false);
+		}
+			
 	}
 	
+	//called when prev button is clicked
 	private void setPrev() {
-		if(adultIterator.hasPrevious())
-			result.setText(adultIterator.previous().toString());
+		if(iterator.hasPrevious()) {
+			result.setText(iterator.previous().toString());
+			if(!next.isEnabled())
+				next.setEnabled(true);
+		}
+		if(!iterator.hasPrevious()) {
+			prev.setEnabled(false);
+		}
+			
 	}
 	
-	private void randomize() {
-		Children tempC;
-    	Adult tempA;
-    	Senior tempS;
-		
-		childIterator = childList.getListIterator();
-		adultIterator = adultList.getListIterator();
-		seniorIterator = seniorList.getListIterator();
-		
-		tempA = adultIterator.next();
-		result.setText(tempA.toString());
-	}
+	
 	
 	public void setLoad(String str) {
 		result.setText(str);
 	}
-
 	
+	
+	
+		
+	
+	
+
 	/**
 	 * 
-	 *All action for the item in constructor will be handled here
-	 *	
+	 *-All action for the item in constructor will be handled here
+	 *-More at Handler Class Action at above description
 	 *
 	 */
 private class Handler implements ActionListener{
@@ -415,7 +551,7 @@ private class Handler implements ActionListener{
 			
 			if(event.getSource()==start) {
 				startSimulation();
-				randomize();
+
 			}
 			
 			if(event.getSource()==dayI||event.getSource()==nameI) {
@@ -423,6 +559,7 @@ private class Handler implements ActionListener{
 					infectSim = new InfectionSimulatorFrame(Integer.parseInt(nameI.getText()),Integer.parseInt(dayI.getText()));
 					infectSim.setSize(596,504);
 					infectSim.setVisible(true);
+					infectSim.setResizable(false);
 					infectSim.setLocationRelativeTo(null);
 				}
 			}
@@ -432,18 +569,17 @@ private class Handler implements ActionListener{
 			if(event.getSource()==prev) {
 				setPrev();
 			}
+			if(event.getSource()==search) {
+				try {
+					int id = Integer.parseInt(search.getText());
+					search(id);
+				}catch(NumberFormatException e) {
+					result.setText("Invalid input");
+				}
+			}
 			
 			
-//			if(event.getSource()==showMap) {
-////				map = new Map();
-////				result.setText(map.toString());
-//				MapFrame mapframe = new MapFrame();
-//				mapframe.setSize(500,500);
-//				mapframe.setVisible(true);
-//				mapframe.setLocationRelativeTo(null);
-//				
-//			}
-//			
+				
 		}
 }
 }
