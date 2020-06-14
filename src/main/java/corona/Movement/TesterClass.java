@@ -1,5 +1,5 @@
 package corona.Movement;
-import test.*;
+import corona.map.*;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -15,7 +15,7 @@ public class TesterClass {
 
     public static void main(String[] args) {
         try {
-            RandomizeInitiation ri = new RandomizeInitiation();
+            MovementSimulatorAlgorithm ri = new MovementSimulatorAlgorithm();
             Map map=new Map();
             ri.setMap(map);
             ri.initiate();

@@ -1,4 +1,4 @@
-package test;
+package corona.map;
 
 import java.util.Iterator;
 

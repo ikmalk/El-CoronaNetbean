@@ -21,7 +21,7 @@ import corona.map.Map;
 public class MovementSimulatorAlgorithm {
 
     private Map map;
-    private final int numOfCitizens = 1000;
+    private final int numOfCitizens = 600;
     private DoubleLinkedList<Children> child;
     private DoubleLinkedList<Adult> adult;
     private DoubleLinkedList<Senior> senior;
@@ -31,8 +31,8 @@ public class MovementSimulatorAlgorithm {
 
     public MovementSimulatorAlgorithm() throws Exception {
         Random r = new Random();
-        numOfAdult = 450 + r.nextInt(100);
-        numOfSenior = 250 + r.nextInt(100);
+        numOfAdult = 270 + r.nextInt(60);
+        numOfSenior = 150 + r.nextInt(60);
         numOfChildren = numOfCitizens - numOfAdult - numOfSenior;
 
         child = new DoubleLinkedList<Children>();
@@ -44,8 +44,8 @@ public class MovementSimulatorAlgorithm {
     
     public MovementSimulatorAlgorithm(MovementSimulatorFrame frame, Map map) throws Exception {
         Random r = new Random();
-        numOfAdult = 450 + r.nextInt(100);
-        numOfSenior = 250 + r.nextInt(100);
+        numOfAdult = 270 + r.nextInt(60);
+        numOfSenior = 150 + r.nextInt(60);
         numOfChildren = numOfCitizens - numOfAdult - numOfSenior;
 
         child = new DoubleLinkedList<Children>();

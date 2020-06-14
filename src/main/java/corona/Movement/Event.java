@@ -3,7 +3,7 @@ package corona.Movement;
 import java.util.Random;
 
 import corona.map.*;
-import test.Map;
+import corona.map.Map;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
